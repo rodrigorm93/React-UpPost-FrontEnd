@@ -1,8 +1,8 @@
 ## App React con Redux-firebase
 
 Proyecto para subir post con imagen o video mas una descripcion, utilizamos login con google o firebase para poder tener acceso a la
-creacion de post.
-Utlizacion de Rutas privadas y publicas para controlar el manejo de los post.
+creación de post.<br />
+Utilización de Rutas privadas y publicas para controlar el manejo de los post.
 
 In the project directory, you can run:
 

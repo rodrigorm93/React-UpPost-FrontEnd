@@ -38,6 +38,13 @@ export const postReducer = (state = initialState, action) => {
         posts: [...action.payload], //las notas vienen en un action que es un arreglo
       };
 
+    case types.notesDelete:
+      return {
+        ...state,
+        active: null, //desmarcamos la nota que estamo borrando sandnola d ela snotas activas
+        posts: state.posts.filter((post) => post.id !== action.payload), //devolvemos todas las nota menos la que borramos
+      };
+
     default:
       return state;
   }

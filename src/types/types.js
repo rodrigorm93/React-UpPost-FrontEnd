@@ -14,7 +14,9 @@ export const types = {
   postsLoad: "[Posts] Load posts", //para cargar todas las notas
   notesUpdate: "[Posts] Update note",
   notesFileUrl: "[Posts] Update image url",
-  notesDelete: "[Posts] Delete note",
+  postDelete: "[Posts] Delete Post",
   notesLogoutCleaning: "[Posts] Logout Cleaning", //para limpiar todo la informacion de notas dle usuario que este en memoria
   postUpCorrect: "[POST] msj de post subido correctamente",
+
+  resetPagination: "[Pagination] indicar reinicio de la paginacion",
 };

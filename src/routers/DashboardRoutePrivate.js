@@ -13,10 +13,13 @@ export const DashboardRoutePrivate = () => {
   // <Route exact path="/private/editPost" component={EditPost} />
   const { active, ok } = useSelector((state) => state.posts);
   return (
-    <>
+    <Layout className="layout">
       <MenuPosted />
 
-      <Content>
+      <Content
+        className="site-layout"
+        style={{ padding: "0 10px", marginTop: 20 }}
+      >
         <Switch>
           {ok ? (
             <Redirect to="/" />
@@ -32,6 +35,6 @@ export const DashboardRoutePrivate = () => {
           )}
         </Switch>
       </Content>
-    </>
+    </Layout>
   );
 };

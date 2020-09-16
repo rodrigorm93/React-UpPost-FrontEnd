@@ -6,6 +6,7 @@ import { login } from "../action/auth";
 import { AuthRouter } from "./AuthRouter";
 import { DashboardRoutePrivate } from "./DashboardRoutePrivate";
 import { PrivateRoute } from "./PrivateRoute";
+import { Spinner } from "react-bootstrap";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,11 @@ export const AppRouter = () => {
   }, [dispatch, setChecking, setIsLoggedIn]);
 
   if (checking) {
-    return <h1>Espere...</h1>;
+    return (
+      <div className="spinner">
+        <Spinner animation="border" variant="info" />
+      </div>
+    );
   }
 
   return (

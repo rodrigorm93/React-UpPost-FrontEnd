@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoadingMyPosts } from "../../action/post";
 import { PostMyEntry } from "./PostMyEntry";
+import { Spinner } from "react-bootstrap";
+import { Row, Col, Button } from "antd";
 
 export const ViewMyPost = () => {
   const { posts } = useSelector((state) => state.posts);
@@ -22,13 +24,18 @@ export const ViewMyPost = () => {
 
   return (
     <div>
-      <h1>Mis Post</h1>
       {loading ? (
-        <h1>Espere...</h1>
+        <div className="spinner">
+          <Spinner animation="border" variant="info" />
+        </div>
       ) : (
         <>
           {posts.map((post) => (
-            <PostMyEntry key={post.id} {...post} />
+            <Row justify="space-around" align="middle">
+              <Col className="col-post-myPost" key={post.id} span={12}>
+                <PostMyEntry key={post.id} {...post} />
+              </Col>
+            </Row>
           ))}
         </>
       )}

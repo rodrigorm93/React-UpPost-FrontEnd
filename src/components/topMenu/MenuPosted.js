@@ -1,7 +1,12 @@
 import React from "react";
 
 import { Layout, Menu } from "antd";
-import { UserOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  HomeOutlined,
+  VideoCameraOutlined,
+  CameraOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 
@@ -28,13 +33,13 @@ export const MenuPosted = () => {
           </NavLink>
         </Menu.Item>
 
-        <Menu.Item key="video" icon={<HomeOutlined />}>
+        <Menu.Item key="video" icon={<VideoCameraOutlined />}>
           <NavLink activeClassName="active" exact to="/category/video">
             Videos
           </NavLink>
         </Menu.Item>
 
-        <Menu.Item key="imagen" icon={<HomeOutlined />}>
+        <Menu.Item key="imagen" icon={<CameraOutlined />}>
           <NavLink activeClassName="active" exact to="/category/imagen">
             Imagenes
           </NavLink>

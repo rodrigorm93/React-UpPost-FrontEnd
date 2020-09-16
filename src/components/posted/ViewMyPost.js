@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { startLoadingMyPosts } from "../../action/post";
 import { PostMyEntry } from "./PostMyEntry";
 import { Spinner } from "react-bootstrap";
-import { Row, Col, Button } from "antd";
+import { Row, Col } from "antd";
 
 export const ViewMyPost = () => {
   const { posts } = useSelector((state) => state.posts);

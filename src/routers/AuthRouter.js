@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { LoginScreen } from "../components/login/LoginScreen";
 import { RegisterScreen } from "../components/register/RegisterScreen";
-import { Layout, Row } from "antd";
+import { Layout } from "antd";
 import { MenuPosted } from "../components/topMenu/MenuPosted";
 import { PostedEntries } from "../components/posted/PostedEntries";
 import { PostEntrySelect } from "../components/posted/PostEntrySelect";

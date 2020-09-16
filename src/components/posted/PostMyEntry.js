@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "antd";
-
 import { Card } from "react-bootstrap";
 import { DeleteFilled, SettingFilled } from "@ant-design/icons";
 import momente from "moment";

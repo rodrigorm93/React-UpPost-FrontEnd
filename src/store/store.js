@@ -2,7 +2,6 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 
 import { authReducer } from "../reducers/authReducer";
-import { paginationReducer } from "../reducers/paginationReducer";
 import { postReducer } from "../reducers/postReducer";
 import { uiReducer } from "../reducers/uiReducer";
 
@@ -15,7 +14,6 @@ const reducers = combineReducers({
   auth: authReducer,
   ui: uiReducer,
   posts: postReducer,
-  pagination: paginationReducer,
 });
 
 export const store = createStore(

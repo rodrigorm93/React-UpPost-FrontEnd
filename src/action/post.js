@@ -9,7 +9,6 @@ import {
 import { types } from "../types/types";
 import Swal from "sweetalert2";
 import { fileUpload } from "../helpers/fileUpload";
-import { resetearPagination } from "./pagination";
 
 //tarea asincrona
 export const startNewPost = (

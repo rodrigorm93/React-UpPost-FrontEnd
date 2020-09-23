@@ -1,49 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { startLoadingPostBycategory } from "../../action/post";
 import { PostEntry } from "./PostEntry";
 import { Row, Col } from "antd";
 import { Empty } from "antd";
 
 import { Spinner } from "react-bootstrap";
+import { StartLoadingPostsByCategoria } from "../../action/post";
 
 export const PostEntrySelect = () => {
   const { categoryid } = useParams();
-
-  const { posts } = useSelector((state) => state.posts);
-
+  const { data, isLoading } = useSelector((state) => state.dataFetch);
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    async function anyNameFunction() {
-      await dispatch(startLoadingPostBycategory(categoryid));
-      setLoading(false);
-    }
+    let didCancel = false;
+    const startSelectCategory = async () => {
+      dispatch({ type: "FETCH_INIT" });
 
-    anyNameFunction();
+      try {
+        const results = await StartLoadingPostsByCategoria(categoryid);
+
+        if (!didCancel) {
+          dispatch({ type: "FETCH_SUCCESS", payload: results });
+        }
+      } catch (error) {
+        if (!didCancel) {
+          dispatch({ type: "FETCH_FAILURE" });
+        }
+      }
+    };
+    startSelectCategory();
+    return () => {
+      didCancel = true;
+    };
   }, [dispatch, categoryid]);
 
   return (
     <>
-      {loading ? (
-        <div className="spinner">
-          <Spinner animation="border" variant="success" />
-        </div>
+      {isLoading ? (
+        <>
+          <div className="spinner">
+            <Spinner animation="border" variant="info" />
+          </div>
+        </>
       ) : (
         <>
-          <Row
-            className="row-card "
-            justify="space-around"
-            gutter={[24, 16]}
-            align="middle"
-          >
-            {posts.length > 0 ? (
+          <Row className="row-card " gutter={[32, 16]} align="middle">
+            {data.length > 0 ? (
               <>
-                {posts.map((post) => (
-                  <Col className="col-post" key={post.id} span={10}>
+                {data.map((post) => (
+                  <Col key={post.id} span={12}>
                     <PostEntry {...post} key={post.id} />
                   </Col>
                 ))}

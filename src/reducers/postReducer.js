@@ -4,6 +4,7 @@ const initialState = {
   posts: [],
   active: null,
   ok: null,
+  checking: true,
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -14,6 +15,12 @@ export const postReducer = (state = initialState, action) => {
         active: {
           ...action.payload, // sacamos todo lo que nos entrego el action
         },
+      };
+
+    case types.postsAddNew:
+      return {
+        ...state,
+        posts: [...state.posts, action.payload],
       };
 
     case types.postsDesactive:
@@ -36,6 +43,21 @@ export const postReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: [...action.payload], //las notas vienen en un action que es un arreglo
+      };
+
+    case types.postFinishLoading:
+      return {
+        ...state,
+        checking: false,
+      };
+
+    case types.postUpdated:
+      return {
+        ...state,
+        //vamos actualizar un evento,utilizando el map
+        posts: state.post.map((e) =>
+          e.id === action.payload.id ? action.payload : e
+        ),
       };
 
     case types.notesDelete:

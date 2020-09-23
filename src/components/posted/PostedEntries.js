@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { PostEntry } from "./PostEntry";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  startLoadpaginationNext,
-  startLoadpaginationPrevious,
-  startLoadSinPagination,
-} from "../../action/post";
+
 import { Row, Col, Button } from "antd";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 
 import { Spinner } from "react-bootstrap";
 import { CarouselsApp } from "../carousels/CarouselsApp";
+import { desactivePost } from "../../action/post";
+
 export const PostedEntries = () => {
+  const dispatch = useDispatch();
   const { posts } = useSelector((state) => state.posts);
 
   const [loading, setLoading] = useState(true);
 
-  const dispatch = useDispatch();
-
+  //cada vez que entremos al home limpiamos el post seleccionado
   useEffect(() => {
-    async function anyNameFunction() {
-      await dispatch(startLoadSinPagination());
-      setLoading(false);
-    }
-
-    anyNameFunction();
+    dispatch(desactivePost());
+    setLoading(false);
   }, [dispatch]);
-
-  const handlePaginationNext = () => {
-    dispatch(startLoadpaginationNext());
-  };
-
-  const handlePaginationPrevious = () => {
-    dispatch(startLoadpaginationPrevious());
-  };
 
   return (
     <>
@@ -43,44 +29,24 @@ export const PostedEntries = () => {
         </div>
       ) : (
         <>
-          <Row
-            className="row-card"
-            justify="space-around"
-            gutter={[24, 16]}
-            align="middle"
-          >
+          <Row gutter={[8, 8]} align="middle">
             <Col span={24}>
               <CarouselsApp />
             </Col>
           </Row>
-          <Row
-            className="row-card "
-            justify="space-around"
-            gutter={[24, 16]}
-            align="middle"
-          >
+          <Row gutter={[32, 8]} align="middle">
             {posts.map((post) => (
-              <Col className="col-post" key={post.id} span={9}>
+              <Col key={post.id} span={12}>
                 <PostEntry {...post} key={post.id} />
               </Col>
             ))}
           </Row>
           <Row className="row-pagination" justify="center">
             <Col span={8} className="col-pagination">
-              <Button
-                icon={<LeftCircleOutlined />}
-                onClick={handlePaginationPrevious}
-              >
-                previous
-              </Button>
+              <Button icon={<LeftCircleOutlined />}>previous</Button>
             </Col>
             <Col className="col-pagination">
-              <Button
-                icon={<RightCircleOutlined />}
-                onClick={handlePaginationNext}
-              >
-                next
-              </Button>
+              <Button icon={<RightCircleOutlined />}>next</Button>
             </Col>
           </Row>
         </>

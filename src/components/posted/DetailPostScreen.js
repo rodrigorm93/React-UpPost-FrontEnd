@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Avatar } from "antd";
+import { Row, Col } from "antd";
 
 import { Card } from "react-bootstrap";
 
-import momente from "moment";
 import ReactPlayer from "react-player";
 import CKEditor from "ckeditor4-react";
 
-export const DetailPostScreen = ({
-  name,
-  body,
-  title,
-  date,
-  urlVideo,
+export const DetailPostScreen = ({ props }) => {
+  const [urlVideoState, setUrlVideoState] = useState("");
 
-  url,
-}) => {
-  const newDate = momente(date);
-  const [urlVideoState, setUrlVideoState] = useState(null);
+  const { title, urlImg, urlVideo, body } = props;
 
   useEffect(() => {
     setUrlVideoState(`${urlVideo}`);
@@ -27,7 +19,7 @@ export const DetailPostScreen = ({
   return (
     <>
       <Row justify="space-around" align="middle" className="row-container">
-        <Col span={15} className="col-detail">
+        <Col span={20} className="col-detail">
           <Card
             className="text-center card-box-container"
             bg={"light"}
@@ -35,36 +27,30 @@ export const DetailPostScreen = ({
             border="light"
           >
             <Card.Header className="header-card">
-              <Avatar size={40} className="avatar-card">
-                {name.substr(0, 2).toUpperCase()}
-              </Avatar>
-
               <Card.Title className="title-card">{title}</Card.Title>
-              {urlVideoState ? (
+              {!!urlVideo ? (
                 <ReactPlayer
                   className="react-player"
                   url={urlVideoState}
                   controls={true}
                 />
               ) : (
-                <Card.Img className="img-card" variant="top" src={url} />
+                <Card.Img className="img-card" variant="top" src={urlImg} />
               )}
             </Card.Header>
 
             <CKEditor
               config={{
                 language: "es",
-                height: 500,
+                height: "auto",
                 width: "100%",
               }}
               readOnly={true}
-              data={body.data}
+              data={body}
             />
           </Card>
 
-          <footer className=" footer-card">
-            {newDate.format("MMM Do YY")}
-          </footer>
+          <footer className=" footer-card"></footer>
         </Col>
       </Row>
 

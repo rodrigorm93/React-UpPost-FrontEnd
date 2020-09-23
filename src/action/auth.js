@@ -1,73 +1,119 @@
-import Swal from "sweetalert2";
-
 import { types } from "../types/types";
 
-import { firebase, googleAuthProvider } from "../firebase/firebase-config";
-import { finishLoading, startLoading } from "./ui";
-export const startLoginEmailPassword = (email, password) => {
-  return (dispatch) => {
-    dispatch(startLoading());
+import {
+  fetchConToken,
+  fetchSinToken,
+  fetchLoginGoogle,
+} from "../helpers/fetch";
+import Swal from "sweetalert2";
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
+//acciones para nuestro backend
 
-        dispatch(finishLoading());
-      })
-      .catch((e) => {
-        console.log(e);
-        dispatch(finishLoading());
-        Swal.fire("Error", e.message, "error");
-      });
+export const startLogin = (email, password) => {
+  return async (dispatch) => {
+    const resp = await fetchSinToken("auth", { email, password }, "POST");
+    const body = await resp.json();
+
+    console.log(body);
+
+    if (body.ok) {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
+
+      dispatch(
+        loginBackend({
+          uid: body.uid,
+          name: body.name,
+        })
+      );
+    } else {
+      Swal.fire("Error", body.msg, "error");
+    }
   };
 };
 
-export const startRegisterWithEmailPasswordName = (email, password, name) => {
-  return (dispatch) => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async ({ user }) => {
-        await user.updateProfile({ displayName: name });
+export const loginStartGoogle = (idToken) => {
+  return async (dispatch) => {
+    const resp = await fetchLoginGoogle(idToken);
+    const body = await resp.json();
 
-        dispatch(login(user.uid, user.displayName));
-      })
-      .catch((e) => {
-        console.log(e);
-        Swal.fire("Error", e.message, "error");
-      });
+    if (body.ok) {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
+
+      dispatch(
+        loginBackend({
+          uid: body.uid,
+          name: body.name,
+        })
+      );
+    }
   };
 };
 
-export const startGoogleLogin = () => {
-  return (dispatch) => {
-    firebase
-      .auth()
-      .signInWithPopup(googleAuthProvider)
-      .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
-      });
+//funciones para revalidar el token
+export const startChecking = () => {
+  return async (dispatch) => {
+    const resp = await fetchConToken("auth/renew");
+    const body = await resp.json();
+    if (body.ok) {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
+
+      dispatch(
+        loginBackend({
+          uid: body.uid,
+          name: body.name,
+        })
+      );
+    } else {
+      //si el token no es correcto cancelaremos el checkin
+      dispatch(checkinFinish());
+    }
   };
 };
 
-export const login = (uid, displayName) => ({
+const checkinFinish = () => ({
+  type: types.authChekingFinish,
+});
+
+const loginBackend = (user) => ({
   type: types.login,
-  payload: {
-    uid,
-    displayName,
-  },
+  payload: user,
 });
 
 export const startLogout = () => {
-  return async (dispatch) => {
-    await firebase.auth().signOut();
-
+  return (dispatch) => {
+    localStorage.clear();
     dispatch(logout());
   };
 };
 
-export const logout = () => ({
-  type: types.logout,
+const logout = () => ({
+  type: types.authLogout,
 });
+
+export const startRegister = (email, password, name) => {
+  return async (dispatch) => {
+    const resp = await fetchSinToken(
+      "auth/new",
+      { email, password, name },
+      "POST"
+    );
+    const body = await resp.json();
+
+    if (body.ok) {
+      localStorage.setItem("token", body.token);
+      localStorage.setItem("token-init-date", new Date().getTime());
+
+      dispatch(
+        loginBackend({
+          uid: body.uid,
+          name: body.name,
+        })
+      );
+    } else {
+      Swal.fire("Error", body.msg, "error");
+    }
+  };
+};

@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { firebase } from "../firebase/firebase-config";
-import { login } from "../action/auth";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { AuthRouter } from "./AuthRouter";
 import { DashboardRoutePrivate } from "./DashboardRoutePrivate";
 import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
+import { startChecking } from "../action/auth";
+import { PostedEntries } from "../components/posted/PostedEntries";
+import { Layout } from "antd";
+import FooterApp from "../components/footer/FooterApp";
+import { MenuPosted } from "../components/topMenu/MenuPosted";
+import { StartLoadingPosts } from "../action/post";
 import { Spinner } from "react-bootstrap";
 
+const { Content } = Layout;
+
 export const AppRouter = () => {
+  const { checking, uid } = useSelector((state) => state.auth);
+  const { checking: checkingLoadPosts, ok } = useSelector(
+    (state) => state.posts
+  );
   const dispatch = useDispatch();
 
-  const [checking, setChecking] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if (user?.uid) {
-        dispatch(login(user.uid, user.displayName));
-        setIsLoggedIn(true);
-        //dispatch(startLoadingPosts());
-        //una vez que sabemos el id del usuario hacmeos las carga de sus notas
-      } else {
-        setIsLoggedIn(false);
-        //dispatch(startLoadingPosts());
-      }
+    dispatch(startChecking());
+    dispatch(StartLoadingPosts());
+  }, [dispatch, ok]);
 
-      setChecking(false);
-    });
-  }, [dispatch, setChecking, setIsLoggedIn]);
-
-  if (checking) {
+  if (checking && checkingLoadPosts) {
     return (
       <div className="spinner">
         <Spinner animation="border" variant="info" />
@@ -40,14 +38,28 @@ export const AppRouter = () => {
 
   return (
     <Router>
-      <Switch>
-        <PrivateRoute
-          isAuthenticated={isLoggedIn}
-          path="/private"
-          component={DashboardRoutePrivate}
-        />
-        <Route path="/" component={AuthRouter} />
-      </Switch>
+      <Layout className="layout">
+        <MenuPosted />
+
+        <Content className="content-app">
+          <div className="site-layout-content">
+            <Switch>
+              <PrivateRoute
+                isAuthenticated={!!uid}
+                path="/private"
+                component={DashboardRoutePrivate}
+              />
+              <PublicRoute
+                path="/public"
+                component={AuthRouter}
+                isAuthenticated={!!uid}
+              />
+              <Route exact path="/" component={PostedEntries} />
+            </Switch>
+          </div>
+        </Content>
+        <FooterApp />
+      </Layout>
     </Router>
   );
 };

@@ -1,43 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { startLoadingPostDetail } from "../../action/post";
-import { DetailPostScreen } from "./DetailPostScreen";
 import { Spinner } from "react-bootstrap";
+import { DetailPostScreen } from "./DetailPostScreen";
+import { StartDetailPosts } from "../../action/post";
 
 export const DetailPost = () => {
-  const { posts } = useSelector((state) => state.posts);
+  const { data, isLoading } = useSelector((state) => state.dataFetch);
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
-  const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    async function anyNameFunction() {
-      await dispatch(startLoadingPostDetail(id));
-      setLoading(false);
-    }
+    let didCancel = false;
+    const startDetail = async () => {
+      dispatch({ type: "FETCH_INIT" });
 
-    anyNameFunction();
+      try {
+        const results = await StartDetailPosts(id);
+
+        if (!didCancel) {
+          dispatch({ type: "FETCH_SUCCESS", payload: results });
+        }
+      } catch (error) {
+        if (!didCancel) {
+          dispatch({ type: "FETCH_FAILURE" });
+        }
+      }
+    };
+    startDetail();
+    return () => {
+      didCancel = true;
+    };
   }, [dispatch, id]);
-
-  console.log(id);
 
   return (
     <div>
-      {loading ? (
-        <div className="spinner">
-          <Spinner animation="border" variant="info" />
-        </div>
-      ) : (
-        <>
-          {posts.map((post) => (
-            <DetailPostScreen key={post.id} {...post} />
-          ))}
-        </>
-      )}
+      <>
+        {isLoading ? (
+          <>
+            <div className="spinner">
+              <Spinner animation="border" variant="info" />
+            </div>
+          </>
+        ) : (
+          <div>
+            <DetailPostScreen props={data[0]} />
+          </div>
+        )}
+      </>
     </div>
   );
 };

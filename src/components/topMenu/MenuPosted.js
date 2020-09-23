@@ -25,7 +25,6 @@ export const MenuPosted = () => {
 
   return (
     <Header>
-      <div className="logo" />
       <Menu theme="dark" mode="horizontal">
         <Menu.Item key="home" icon={<HomeOutlined />}>
           <NavLink activeClassName="active" exact to="/">
@@ -34,13 +33,13 @@ export const MenuPosted = () => {
         </Menu.Item>
 
         <Menu.Item key="video" icon={<VideoCameraOutlined />}>
-          <NavLink activeClassName="active" exact to="/category/video">
+          <NavLink activeClassName="active" exact to="/public/category/video">
             Videos
           </NavLink>
         </Menu.Item>
 
         <Menu.Item key="imagen" icon={<CameraOutlined />}>
-          <NavLink activeClassName="active" exact to="/category/imagen">
+          <NavLink activeClassName="active" exact to="/public/category/imagen">
             Imagenes
           </NavLink>
         </Menu.Item>
@@ -70,7 +69,7 @@ export const MenuPosted = () => {
           </SubMenu>
         ) : (
           <Menu.Item key="login" className="sub-menu-user">
-            <Link to="/login" className="link">
+            <Link to="/public/login" className="link">
               Login
             </Link>
           </Menu.Item>

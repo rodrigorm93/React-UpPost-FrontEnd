@@ -10,7 +10,8 @@ export const PostEntry = ({
   title,
   date,
   urlVideo,
-  url,
+  urlImg,
+  user,
 }) => {
   const newDate = momente(date);
   const [urlVideoState, setUrlVideoState] = useState(null);
@@ -26,9 +27,9 @@ export const PostEntry = ({
         title={title}
         id={id}
         descripcion={descripcion}
-        url={url}
+        urlImg={urlImg}
         urlVideoState={urlVideoState}
-        name={name}
+        user={user}
         newDate={newDate}
       />
     </>

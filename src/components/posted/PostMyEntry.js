@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { DeleteFilled, SettingFilled } from "@ant-design/icons";
 import momente from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  activePost,
-  startDeleting,
-  startLoadingMyPosts,
-} from "../../action/post";
+import { useDispatch } from "react-redux";
+import { activePost } from "../../action/post";
 import { Link } from "react-router-dom";
 import ReactPlayer from "react-player";
 import CKEditor from "ckeditor4-react";
@@ -19,10 +15,11 @@ export const PostMyEntry = ({
   title,
   date,
   urlVideo,
-  url,
+  urlImg,
+  img,
+  categoria,
 }) => {
-  const [urlVideoState, setUrlVideoState] = useState(null);
-  const { uid } = useSelector((state) => state.auth);
+  const [urlVideoState, setUrlVideoState] = useState("");
   const newDate = momente(date);
   const dispatch = useDispatch();
 
@@ -33,8 +30,10 @@ export const PostMyEntry = ({
         title,
         body,
         urlVideo,
+        categoria,
         descripcion,
-        url,
+        img,
+        urlImg,
       })
     );
   };
@@ -44,23 +43,20 @@ export const PostMyEntry = ({
   }, [urlVideo]); // DE LAS VARIABLES QUE SE VAN A EJECUTAR SE HARA QUE EL USEEFECT SE VUELVA A EJECUTAR, si alguna de
   //esas dos variables sufre un cambio el useEffect se actualizara
 
-  const handleDelete = () => {
-    dispatch(startDeleting(id));
-    dispatch(startLoadingMyPosts(uid));
-  };
+  const handleDelete = () => {};
 
   return (
     <Card className="text-center">
       <Card.Header className="header-card">
         <Card.Title className="title-card">{title}</Card.Title>
-        {urlVideoState ? (
+        {!!urlVideo ? (
           <ReactPlayer
             className="react-detail"
             url={urlVideoState}
             controls={true}
           />
         ) : (
-          <Card.Img className="card-img-detail" variant="top" src={url} />
+          <Card.Img className="card-img-detail" variant="top" src={urlImg} />
         )}
       </Card.Header>
 
@@ -70,7 +66,7 @@ export const PostMyEntry = ({
             language: "es",
           }}
           readOnly={true}
-          data={body.data}
+          data={body}
         />
       </Card.Body>
       <Card.Footer className="text-muted">

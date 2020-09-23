@@ -1,14 +1,19 @@
 body {
   // overflow-y: hidden; /* Hide vertical scrollbar */
-  overflow-x: hidden; /* Hide horizontal scrollbar */
+  // overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .content-app {
-  overflow-y: hidden;
-  padding: 1px 40px 40px 40px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  //padding: 1px 10% 20px 10%;
 }
 .site-layout-content {
+  width: 100%;
   background: #fff;
+  box-sizing: border-box;
+  padding: 1px 15% 20px 15%;
 }
 .row {
   background-color: white;
@@ -46,10 +51,8 @@ body {
   border-radius: 40px !important;
 }
 .img-card {
-  height: 400px !important;
-  width: 90% !important;
-  display: block;
-  margin: auto;
+  width: 100% !important;
+  height: auto !important;
 }
 
 .card-img-detail {
@@ -57,7 +60,9 @@ body {
 }
 
 .card-img-home {
-  padding: 5px !important;
+  padding: 2px !important;
+  width: 100%;
+  height: auto;
 }
 .footer-card {
   font-size: 12px;
@@ -80,8 +85,9 @@ body {
 }
 
 .react-player-home {
-  display: block;
-  margin: auto;
+  padding: 2px !important;
+  width: 500px !important;
+  height: 400px !important;
 }
 
 .avatar-card {
@@ -100,12 +106,6 @@ body {
   padding-top: 100px;
 }
 
-.card-post {
-  &:hover {
-    color: red !important;
-  }
-}
-
 .col-post-myPost {
   padding-bottom: 20px;
 }
@@ -113,4 +113,11 @@ body {
 .col-empty {
   height: 500px !important;
   padding-top: 200px !important;
+}
+
+@media (max-width: 800px) {
+  .site-layout-content {
+    width: 100%;
+    padding: 0;
+  }
 }

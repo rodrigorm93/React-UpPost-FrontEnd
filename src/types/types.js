@@ -1,6 +1,8 @@
 export const types = {
   login: "[Auth] Login",
   logout: "[Auth] Logout",
+  authChekingFinish: "[auth] Finish checking login state",
+  authLogout: "[auth] Logout",
 
   uiSetError: "[UI] Set Error",
   uiRemoveError: "[UI] Remove Error",
@@ -8,10 +10,14 @@ export const types = {
   uiStartLoading: "[UI] Start loading",
   uiFinishLoading: "[UI] Finish loading",
 
-  notesAddNew: "[Posts] New note",
+  postsAddNew: "[Posts] New post",
   postsActive: "[Posts] Set active posts", //para saber si la nota esta activa
   postsDesactive: "[Posts] Set desactive posts",
   postsLoad: "[Posts] Load posts", //para cargar todas las notas
+  postFinishLoading: "[Posts] Finish loading posts", //para cargar todas las notas
+
+  postUpdated: "[Posts] Update post",
+
   notesUpdate: "[Posts] Update note",
   notesFileUrl: "[Posts] Update image url",
   postDelete: "[Posts] Delete Post",

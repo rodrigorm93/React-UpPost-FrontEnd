@@ -1,23 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { startNewPost } from "../../action/post";
+import { useDispatch } from "react-redux";
+import { eventStartAddNew } from "../../action/post";
 import { Form } from "react-bootstrap";
 import { Row, Col } from "antd";
 import { useForm } from "../../hooks/useForm";
 
-import { Upload, Button } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import CKEditor from "ckeditor4-react";
 export const AddPost = () => {
   const dispatch = useDispatch();
 
-  const { name } = useSelector((state) => state.auth);
-
-  const [fileup, setfileup] = useState(false);
-
   //const [fileupArchivo, setFileupArchivo] = useState(null);
 
-  const [category, setCategory] = useState("imagen");
+  //const [category, setCategory] = useState("imagen");
 
   const [selection, setSelection] = useState("imagen");
 
@@ -27,17 +21,38 @@ export const AddPost = () => {
 
   const [formValues, handleInputChange] = useForm({
     title: "",
-    decripcion: "",
+    descripcion: "",
     urlVideo: "",
   });
 
-  const { title, decripcion, urlVideo } = formValues;
+  const { title, descripcion, urlVideo } = formValues;
 
   const handleAddNew = (e) => {
     e.preventDefault();
-    dispatch(
-      startNewPost(name, title, body, decripcion, urlVideo, category, fileup)
-    );
+    let post;
+
+    if (!!urlVideo) {
+      post = {
+        title,
+        body: body.data,
+        descripcion,
+        categoria: selection,
+        dateCreation: new Date(),
+        urlVideo,
+      };
+    } else {
+      post = {
+        title,
+        body: body.data,
+        descripcion,
+        dateCreation: new Date(),
+        categoria: selection,
+      };
+    }
+
+    dispatch(eventStartAddNew(post, file));
+
+    setfile(false);
   };
 
   const handleInputChangeCk = (e) => {
@@ -50,15 +65,10 @@ export const AddPost = () => {
     setSelection(e.target.value);
   };
 
-  const handleSelectionCategory = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const props = {
-    onChange(info) {
-      const file = info.fileList[0].originFileObj;
-      setfileup(file);
-    },
+  const [file, setfile] = useState(false);
+  const onChangeFile = (e) => {
+    setfile(e.target.files);
+    console.log(e.target.files);
   };
 
   return (
@@ -82,8 +92,8 @@ export const AddPost = () => {
               <Form.Control
                 as="textarea"
                 rows="2"
-                name="decripcion"
-                value={decripcion}
+                name="descripcion"
+                value={descripcion}
                 onChange={handleInputChange}
               />
 
@@ -91,18 +101,6 @@ export const AddPost = () => {
               <Form.Label>Contenido:</Form.Label>
               <CKEditor data={body.data} onChange={handleInputChangeCk} />
             </Form.Group>
-            <Form.Label>Categoria:</Form.Label>
-            <Form.Control
-              as="select"
-              className="mr-sm-2"
-              id="inlineFormCustomSelect"
-              onClick={handleSelectionCategory}
-              custom
-            >
-              <option value="imagen">Imagen</option>
-              <option value="video">Video</option>
-            </Form.Control>
-            <br /> <br />
             <Form.Label>Opciones:</Form.Label>
             <Form.Control
               as="select"
@@ -116,9 +114,7 @@ export const AddPost = () => {
             </Form.Control>
             <br /> <br />
             {selection === "imagen" ? (
-              <Upload {...props}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
+              <input type="file" id="fileUpload" onChange={onChangeFile} />
             ) : (
               <Form.Group controlId="formGroupVideo">
                 <Form.Label>Url Video</Form.Label>

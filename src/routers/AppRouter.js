@@ -18,7 +18,7 @@ const { Content } = Layout;
 
 export const AppRouter = () => {
   const { checking, uid } = useSelector((state) => state.auth);
-  const { checking: checkingLoadPosts, ok } = useSelector(
+  const { checking: checkingLoadPosts, ok, deletePost } = useSelector(
     (state) => state.posts
   );
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export const AppRouter = () => {
   useEffect(() => {
     dispatch(startChecking());
     dispatch(StartLoadingPosts());
-  }, [dispatch, ok]);
+  }, [dispatch, ok, deletePost]);
 
   if (checking && checkingLoadPosts) {
     return (
@@ -37,8 +37,8 @@ export const AppRouter = () => {
   }
 
   return (
-    <Router>
-      <Layout className="layout">
+    <Layout>
+      <Router>
         <MenuPosted />
 
         <Content className="content-app">
@@ -59,7 +59,7 @@ export const AppRouter = () => {
           </div>
         </Content>
         <FooterApp />
-      </Layout>
-    </Router>
+      </Router>
+    </Layout>
   );
 };

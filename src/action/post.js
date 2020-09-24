@@ -24,7 +24,6 @@ export const eventStartAddNew = (post, fileup) => {
       let bodyUploadImg;
 
       if (body.ok && fileup) {
-        console.log("pasa");
         const respUploadImg = await fetchConTokenUpload(
           `upload/posts/${body.post.id}`,
           fileup
@@ -38,12 +37,31 @@ export const eventStartAddNew = (post, fileup) => {
           name: name,
           img: bodyUploadImg.img,
         };
-      } else {
+      } else if (body.ok) {
         post.id = body.post.id; //le agreganmos los campos que le faltan los cuales estan guardados en la bd
         post.user = {
           _id: uid,
           name: name,
         };
+      }
+
+      //hay un  error
+      else {
+        let msgError = [];
+        //sacamos los mesnjes de error del JSON
+        for (var clave in body.errors) {
+          //console.log(clave)
+
+          //console.log(body.errors[clave]["msg"]);
+          //console.log(json[clave]['titulo']);
+          msgError.push(body.errors[clave]["msg"]);
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: msgError[0],
+        });
       }
 
       const msj = "Post subido Correctamente";
@@ -82,7 +100,6 @@ export const StartLoadingPosts = () => {
         }
       }
 
-      console.log(body.posts);
       dispatch(LoadingPosts(body.posts));
       dispatch(checkinFinish());
     } catch (error) {
@@ -222,7 +239,12 @@ export const eventStartUpdate = (post, file) => {
 
         bodyDeleteImg = await deleteImg.json();
         console.log(bodyDeleteImg);
+
+        //limpiamos las imagenes del post para luego no guardarla ne la siguiente consulta
+        post.img = "";
+        post.urlImg = "";
       }
+
       const resp = await fetchConToken(`posts/${post.id}`, post, "PUT");
       const body = await resp.json();
 
@@ -250,6 +272,59 @@ export const eventStartUpdate = (post, file) => {
   };
 };
 
+export const eventStartDelete = (post, img) => {
+  return async (dispatch) => {
+    console.log(post, img);
+    let bodyDeleteImg;
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (!!img) {
+          const deleteImg = await fetchSinToken(
+            `upload/imagen/posts/${img}`,
+            {},
+            "DELETE"
+          );
+
+          bodyDeleteImg = await deleteImg.json();
+          console.log(bodyDeleteImg);
+        }
+        const resp = await fetchConToken(`posts/${post}`, {}, "DELETE");
+        const body = await resp.json();
+        if (body.ok) {
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+
+          const msj = "Post eliminado Correctamente";
+
+          //dispatch(PostUp(msj));
+
+          dispatch(PostDeleteOkay(msj));
+        }
+      }
+    });
+
+    try {
+      //const resp = await fetchConToken(`events/${event.id}`, event, "PUT");
+      // const body = await resp.json();
+    } catch (error) {}
+  };
+};
+
+const PostDeleteOkay = (id, msj) => ({
+  type: types.stateDelete,
+  payload: {
+    id,
+    msj,
+  },
+});
 /*
 const postUpdated = (post) => ({
   type: types.postUpdated,

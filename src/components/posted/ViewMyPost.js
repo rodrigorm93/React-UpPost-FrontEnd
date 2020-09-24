@@ -7,7 +7,7 @@ import { StartLoadingMyPosts } from "../../action/post";
 
 export const ViewMyPost = () => {
   const { data, isLoading } = useSelector((state) => state.dataFetch);
-
+  const { deletePost } = useSelector((state) => state.posts);
   const { uid } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -32,9 +32,8 @@ export const ViewMyPost = () => {
     return () => {
       didCancel = true;
     };
-  }, [dispatch, uid]);
+  }, [deletePost, dispatch, uid]);
 
-  console.log(data);
   return (
     <div>
       {isLoading ? (

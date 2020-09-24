@@ -13,19 +13,15 @@ export const EditPost = () => {
 
   const { active: post } = useSelector((state) => state.posts);
 
+  const [urlVideo, setUrlVideo] = useState(null);
+
   console.log(post);
 
   const [formValues, handleInputChange] = useForm(post);
 
-  const { title, body, descripcion, urlVideo } = formValues;
+  const { title, body, descripcion } = formValues;
 
-  const [selection, setSelection] = useState("imagen");
-
-  const [category, setCategory] = useState("imagen");
-
-  const handleSelectionCategory = (e) => {
-    setCategory(e.target.value);
-  };
+  const [selection, setSelection] = useState(post.categoria.tipo);
 
   const [bodyPost, setBody] = useState({
     data: body,
@@ -41,7 +37,7 @@ export const EditPost = () => {
         title,
         body: bodyPost.data,
         descripcion,
-        categoria: category,
+        categoria: selection,
         dateCreation: new Date(),
         urlVideo,
         idImg: post.img,
@@ -53,7 +49,8 @@ export const EditPost = () => {
         body: bodyPost.data,
         descripcion,
         dateCreation: new Date(),
-        categoria: category,
+        categoria: selection,
+        urlVideo,
         idImg: post.img,
       };
     }
@@ -73,6 +70,10 @@ export const EditPost = () => {
 
   const onChangeFile = (e) => {
     setfile(e.target.files);
+  };
+
+  const onChangeurlVideo = (e) => {
+    setUrlVideo(e.target.value);
   };
 
   return (
@@ -106,17 +107,6 @@ export const EditPost = () => {
               onChange={handleInputChangeCk}
               data={bodyPost.data}
             />
-            <Form.Label>Categoria:</Form.Label>
-            <Form.Control
-              as="select"
-              className="mr-sm-2"
-              id="inlineFormCustomSelect"
-              onClick={handleSelectionCategory}
-              custom
-            >
-              <option value="imagen">Imagen</option>
-              <option value="video">Video</option>
-            </Form.Control>
             <Form.Label>Opciones:</Form.Label>
             <Form.Control
               as="select"
@@ -138,7 +128,7 @@ export const EditPost = () => {
                   type="text"
                   name="urlVideo"
                   value={urlVideo}
-                  onChange={handleInputChange}
+                  onChange={onChangeurlVideo}
                   placeholder="Enter url video"
                 />
               </Form.Group>

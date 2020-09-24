@@ -17,6 +17,7 @@ export const types = {
   postFinishLoading: "[Posts] Finish loading posts", //para cargar todas las notas
 
   postUpdated: "[Posts] Update post",
+  stateDelete: "[Posts] post eliminado correctamente",
 
   notesUpdate: "[Posts] Update note",
   notesFileUrl: "[Posts] Update image url",

@@ -15,9 +15,10 @@ export const PostedEntries = () => {
 
   const [loading, setLoading] = useState(true);
 
-  //cada vez que entremos al home limpiamos el post seleccionado
+  //cada vez que entremos al home limpiamos el post seleccionado y la data de los loading para volver a cargar todo
   useEffect(() => {
     dispatch(desactivePost());
+    dispatch({ type: "FETCH_CLEAR" });
     setLoading(false);
   }, [dispatch]);
 

@@ -16,7 +16,7 @@ export const CardApp = ({
   //const handleActive = (id) => {
   //dispatch(StartDetailPosts(id));
   // };
-
+  console.log(urlVideoState);
   return (
     <div id="cards_landscape_wrap-2">
       <div className="container">
@@ -26,18 +26,18 @@ export const CardApp = ({
               <div className="card-flyer">
                 <div className="text-box">
                   <div className="image-box">
-                    {urlVideoState !== "undefined" ? (
-                      <ReactPlayer
-                        className="react-player-home"
-                        url={urlVideoState}
-                        controls={true}
-                      />
-                    ) : (
+                    {!!urlImg ? (
                       <img
                         className="card-img-home"
                         variant="top"
                         src={urlImg}
                         alt={user.name}
+                      />
+                    ) : (
+                      <ReactPlayer
+                        className="react-player-home"
+                        url={urlVideoState}
+                        controls={true}
                       />
                     )}
                   </div>

@@ -16,7 +16,7 @@ export const AddPost = () => {
   const [selection, setSelection] = useState("imagen");
 
   const [body, setBody] = useState({
-    data: "hola",
+    data: "",
   });
 
   const [formValues, handleInputChange] = useForm({

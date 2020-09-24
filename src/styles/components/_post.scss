@@ -11,7 +11,7 @@ body {
 }
 .site-layout-content {
   width: 100%;
-  background: #fff;
+  background: #fff !important;
   box-sizing: border-box;
   padding: 1px 15% 20px 15%;
 }
@@ -115,6 +115,9 @@ body {
   padding-top: 200px !important;
 }
 
+.ant-layout {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
 @media (max-width: 800px) {
   .site-layout-content {
     width: 100%;

@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { DeleteFilled, SettingFilled } from "@ant-design/icons";
 import momente from "moment";
 import { useDispatch } from "react-redux";
-import { activePost } from "../../action/post";
+import { activePost, eventStartDelete } from "../../action/post";
 import { Link } from "react-router-dom";
 import ReactPlayer from "react-player";
 import CKEditor from "ckeditor4-react";
@@ -43,7 +43,9 @@ export const PostMyEntry = ({
   }, [urlVideo]); // DE LAS VARIABLES QUE SE VAN A EJECUTAR SE HARA QUE EL USEEFECT SE VUELVA A EJECUTAR, si alguna de
   //esas dos variables sufre un cambio el useEffect se actualizara
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    dispatch(eventStartDelete(id, img));
+  };
 
   return (
     <Card className="text-center">

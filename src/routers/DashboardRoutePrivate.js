@@ -17,6 +17,7 @@ export const DashboardRoutePrivate = () => {
       )}
 
       <Route exact path="/private/viewPost" component={ViewMyPost} />
+
       {active ? (
         <Route exact path="/private/editPost" component={EditPost} />
       ) : (

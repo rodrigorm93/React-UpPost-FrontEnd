@@ -6,6 +6,14 @@ const initialState = {
 
 export const dataFetchReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "FETCH_CLEAR":
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        data: [],
+      };
+
     case "FETCH_INIT":
       return {
         ...state,

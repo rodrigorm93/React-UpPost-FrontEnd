@@ -5,6 +5,7 @@ const initialState = {
   active: null,
   ok: null,
   checking: true,
+  deletePost: null,
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -65,6 +66,15 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         active: null, //desmarcamos la nota que estamo borrando sandnola d ela snotas activas
         posts: state.posts.filter((post) => post.id !== action.payload), //devolvemos todas las nota menos la que borramos
+      };
+
+    case types.stateDelete:
+      return {
+        ...state, //clonamos el nuevo estado apra siempre regresar un nuevo estado
+        active: null,
+        deletePost: {
+          ...action.payload,
+        },
       };
 
     default:

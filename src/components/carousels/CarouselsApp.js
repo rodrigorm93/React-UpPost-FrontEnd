@@ -12,7 +12,7 @@ export const CarouselsApp = () => {
           <Carousel.Item key={post.id}>
             <img
               className="d-block w-100"
-              src="https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png"
+              src={post.urlImg}
               alt="First slide"
             />
 

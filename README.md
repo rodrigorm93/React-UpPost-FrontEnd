@@ -1,10 +1,11 @@
 ## App React MERN (MongoDB-Express-React-Nodejs) publicado en Heroku
 
-Proyecto para subir posts con una imagen o un video mas una descripcion, utilizamos login con google y registrados en nuestra base de datos .<br />
+Proyecto para subir posts con una imagen o un video mas una descripción, utilizamos login con Google y registrados en nuestra base de datos .<br />
 
-El frontEnd se conecta ha nuestra base de datos de MongoDB por Express implementado en NodeJS
-Utilización de Rutas privadas y publicas para controlar los accesos en el fronEnd por medio de atentificacion,
-verificaciones por medio de tokens en el BackEnd.
+El frontEnd se conecta a nuestra base de datos de MongoDB por Express implementado en NodeJS
+Utilización de Rutas privadas y públicas para controlar los accesos en el frontEnd por medio de autentificación,
+verificaciones por medio de tokens en el BackEnd. 
+
 
 ![Alt text](imgPosteOn.png?raw=true "img")
 

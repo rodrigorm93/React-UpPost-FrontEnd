@@ -1,4 +1,4 @@
-## App React MERN (MongoDB-Express-React-Nodejs) Subido a Heroku
+## App React MERN (MongoDB-Express-React-Nodejs) publicado en Heroku
 
 Proyecto para subir posts con una imagen o un video mas una descripcion, utilizamos login con google y registrados en nuestra base de datos .<br />
 

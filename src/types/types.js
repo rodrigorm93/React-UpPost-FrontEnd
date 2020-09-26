@@ -13,8 +13,13 @@ export const types = {
   postsAddNew: "[Posts] New post",
   postsActive: "[Posts] Set active posts", //para saber si la nota esta activa
   postsDesactive: "[Posts] Set desactive posts",
-  postsLoad: "[Posts] Load posts", //para cargar todas las notas
+  postsLoad: "[Posts] Load todos los posts", //para cargar todas las notas
   postFinishLoading: "[Posts] Finish loading posts", //para cargar todas las notas
+  postNumberPage: "[Posts] Numero de paginas posts",
+  postsClear: "[Posts] Limpiar estados",
+  postsLoadUltimosPost: "[Posts] Carga los ultimos posts",
+  postFinishLoadingPages: "[Posts] Loading de los post por paginacion",
+  postFinishLoadingSearch: "[Posts] Loading post Search",
 
   postUpdated: "[Posts] Update post",
   stateDelete: "[Posts] post eliminado correctamente",

@@ -13,6 +13,7 @@ export const ViewMyPost = () => {
 
   useEffect(() => {
     let didCancel = false;
+
     const startSelectMyPost = async () => {
       dispatch({ type: "FETCH_INIT" });
 
@@ -43,7 +44,12 @@ export const ViewMyPost = () => {
       ) : (
         <>
           {data.map((post) => (
-            <Row justify="space-around" align="middle" key={post.id}>
+            <Row
+              justify="space-around"
+              className="animate__animated animate__zoomIn"
+              align="middle"
+              key={post.id}
+            >
               <Col className="col-post-myPost" key={post.id} span={12}>
                 <PostMyEntry {...post} />
               </Col>

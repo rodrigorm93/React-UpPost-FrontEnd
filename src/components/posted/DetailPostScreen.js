@@ -18,7 +18,11 @@ export const DetailPostScreen = ({ props }) => {
 
   return (
     <>
-      <Row justify="space-around" align="middle" className="row-container">
+      <Row
+        justify="space-around"
+        align="middle"
+        className="row-container animate__animated animate__fadeIn"
+      >
         <Col span={20} className="col-detail">
           <Card
             className="text-center card-box-container"

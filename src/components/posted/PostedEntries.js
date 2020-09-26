@@ -2,29 +2,59 @@ import React, { useEffect, useState } from "react";
 import { PostEntry } from "./PostEntry";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Row, Col, Button } from "antd";
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { Row, Col, Pagination, Input } from "antd";
 
 import { Spinner } from "react-bootstrap";
 import { CarouselsApp } from "../carousels/CarouselsApp";
-import { desactivePost } from "../../action/post";
-
+import {
+  desactivePost,
+  StartLoadingPostsNumberPagination,
+  StartLoadingPostsSearch,
+  StartLoadingUltimosPosts,
+} from "../../action/post";
+import { StartLoadingPostsPagination } from "../../action/post";
 export const PostedEntries = () => {
   const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.posts);
+  const {
+    posts,
+    pages,
+    loadingPostPagination,
+    loadingPostSearch,
+  } = useSelector((state) => state.posts);
+  const [pagination, setPagination] = useState(1);
 
-  const [loading, setLoading] = useState(true);
+  //  const [search, setSearch] = useState("");
+
+  //const [loading, setLoading] = useState(true);
 
   //cada vez que entremos al home limpiamos el post seleccionado y la data de los loading para volver a cargar todo
   useEffect(() => {
     dispatch(desactivePost());
     dispatch({ type: "FETCH_CLEAR" });
-    setLoading(false);
-  }, [dispatch]);
+    //cada vez que se entr a una categoria este reducer se llena de informacion aca se limpia
+    //esta es la entrada prncipal
+
+    dispatch(StartLoadingPostsNumberPagination());
+    dispatch(StartLoadingUltimosPosts());
+
+    dispatch(StartLoadingPostsPagination(pagination));
+  }, [dispatch, pagination]);
+
+  const onChange = (e) => {
+    setPagination(e); //pagina actual
+  };
+
+  console.log("hola2");
+
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+
+    dispatch(StartLoadingPostsSearch(e.target.value, pagination));
+  };
 
   return (
     <>
-      {loading ? (
+      {loadingPostPagination ? (
         <div className="spinner">
           <Spinner animation="border" variant="info" />
         </div>
@@ -35,19 +65,40 @@ export const PostedEntries = () => {
               <CarouselsApp />
             </Col>
           </Row>
-          <Row gutter={[32, 8]} align="middle">
-            {posts.map((post) => (
-              <Col key={post.id} span={12}>
-                <PostEntry {...post} key={post.id} />
-              </Col>
-            ))}
+
+          <Row>
+            <Col span={12} offset={6} className="search">
+              <Input placeholder="Search..." onChange={handleSearch} />
+            </Col>
           </Row>
+
+          {loadingPostSearch ? (
+            <div className="spinner">
+              <Spinner animation="border" variant="info" />
+            </div>
+          ) : (
+            <Row
+              gutter={[48, 40]}
+              align="middle"
+              className="conteiner-post animate__animated animate__fadeIn"
+            >
+              {posts.map((post) => (
+                <Col key={post.id} className="col-conteiner-post">
+                  <PostEntry {...post} key={post.id} />
+                </Col>
+              ))}
+            </Row>
+          )}
+
           <Row className="row-pagination" justify="center">
             <Col span={8} className="col-pagination">
-              <Button icon={<LeftCircleOutlined />}>previous</Button>
-            </Col>
-            <Col className="col-pagination">
-              <Button icon={<RightCircleOutlined />}>next</Button>
+              <Pagination
+                onChange={onChange}
+                defaultCurrent={1}
+                total={pages.number}
+                current={pagination}
+                defaultPageSize={1}
+              />
             </Col>
           </Row>
         </>

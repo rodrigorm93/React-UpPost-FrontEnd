@@ -7,7 +7,7 @@ export default function FooterApp() {
   return (
     <Footer className="footer">
       <p>Rodrigo Ramirez Mendez</p>
-      <p>Desarrollado con : React-Redux-sass-Firebase</p>
+      <p>Desarrollado con : MongoDB-Express-React-NodeJS</p>
     </Footer>
   );
 }

@@ -11,7 +11,7 @@ import { PostedEntries } from "../components/posted/PostedEntries";
 import { Layout } from "antd";
 import FooterApp from "../components/footer/FooterApp";
 import { MenuPosted } from "../components/topMenu/MenuPosted";
-import { StartLoadingPosts } from "../action/post";
+import { clearState } from "../action/post";
 import { Spinner } from "react-bootstrap";
 
 const { Content } = Layout;
@@ -22,26 +22,30 @@ export const AppRouter = () => {
     (state) => state.posts
   );
   const dispatch = useDispatch();
+  console.log("appRouter");
 
   useEffect(() => {
-    dispatch(startChecking());
-    dispatch(StartLoadingPosts());
+    dispatch(startChecking()); //chekear si el usuario ha cargado
+
+    dispatch(clearState());
+    //dispatch(StartLoadingPosts());
+    //dispatch(StartLoadingPostsPagination(pagination));
   }, [dispatch, ok, deletePost]);
 
   if (checking && checkingLoadPosts) {
+    //temrinara der cargar una vez que el usuario y el post esten cargados
     return (
       <div className="spinner">
         <Spinner animation="border" variant="info" />
       </div>
     );
   }
-
   return (
     <Layout>
       <Router>
         <MenuPosted />
 
-        <Content className="content-app">
+        <Content className="content-app animate__animated animate__fadeIn">
           <div className="site-layout-content">
             <Switch>
               <PrivateRoute
@@ -58,6 +62,7 @@ export const AppRouter = () => {
             </Switch>
           </div>
         </Content>
+
         <FooterApp />
       </Router>
     </Layout>

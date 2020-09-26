@@ -11,6 +11,7 @@ export const PostEntry = ({
   date,
   urlVideo,
   urlImg,
+  img,
   user,
 }) => {
   const newDate = momente(date);
@@ -30,6 +31,7 @@ export const PostEntry = ({
         urlImg={urlImg}
         urlVideoState={urlVideoState}
         user={user}
+        img={img}
         newDate={newDate}
       />
     </>

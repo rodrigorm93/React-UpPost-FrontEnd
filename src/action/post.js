@@ -7,6 +7,7 @@ import {
   fetchSinToken,
 } from "../helpers/fetch";
 
+const limitPagination = 4;
 export const eventStartAddNew = (post, fileup) => {
   return async (dispatch, getState) => {
     const { uid, name } = getState().auth; //para obtener la informaicon del redux y ais pasarla la eventAddNew
@@ -22,6 +23,8 @@ export const eventStartAddNew = (post, fileup) => {
       const body = await resp.json();
 
       let bodyUploadImg;
+
+      console.log(fileup);
 
       if (body.ok && fileup) {
         const respUploadImg = await fetchConTokenUpload(
@@ -90,13 +93,15 @@ export const StartLoadingPosts = () => {
 
       if (body.ok) {
         for (let index = 0; index < body.posts.length; index++) {
-          respImg = await fetchSinToken(
-            `upload/imagen/posts/${body.posts[index].img}`
-          );
+          if (body.posts[index].img) {
+            respImg = await fetchSinToken(
+              `upload/imagen/posts/${body.posts[index].img}`
+            );
 
-          bodyImg = await respImg.url;
+            bodyImg = await respImg.url;
 
-          body.posts[index].urlImg = bodyImg;
+            body.posts[index].urlImg = bodyImg;
+          }
         }
       }
 
@@ -107,6 +112,170 @@ export const StartLoadingPosts = () => {
     }
   };
 };
+
+//falta probarlo
+
+export const StartLoadingPostsSearch = (text = "", page) => {
+  return async (dispatch) => {
+    dispatch(checkinFinishSearch(true));
+    try {
+      let respImg;
+      let bodyImg;
+
+      let resp;
+      let body;
+
+      if (!text) {
+        resp = await fetchSinToken(
+          `posts/pagination?page=${page}&limit=${limitPagination}`
+        );
+        body = await resp.json();
+
+        if (body.ok) {
+          for (let index = 0; index < body.posts.results.length; index++) {
+            if (body.posts.results[index].img) {
+              respImg = await fetchSinToken(
+                `upload/imagen/posts/${body.posts.results[index].img}`
+              );
+
+              bodyImg = await respImg.url;
+
+              body.posts.results[index].urlImg = bodyImg;
+            }
+          }
+          dispatch(LoadingPosts(body.posts.results));
+        }
+      } else {
+        resp = await fetchSinToken(`posts/search/${text}`);
+        body = await resp.json();
+
+        if (body.ok) {
+          for (let index = 0; index < body.posts.length; index++) {
+            if (body.posts[index].img) {
+              respImg = await fetchSinToken(
+                `upload/imagen/posts/${body.posts[index].img}`
+              );
+
+              bodyImg = await respImg.url;
+
+              body.posts[index].urlImg = bodyImg;
+            }
+          }
+        }
+        dispatch(LoadingPosts(body.posts));
+      }
+      dispatch(checkinFinishSearch(false));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const checkinFinishSearch = (estado) => ({
+  type: types.postFinishLoadingSearch,
+  payload: estado,
+});
+
+export const StartLoadingPostsPagination = (page) => {
+  return async (dispatch) => {
+    dispatch(checkinFinishPagination(true));
+    try {
+      let respImg;
+      let bodyImg;
+      const resp = await fetchSinToken(
+        `posts/pagination?page=${page}&limit=${limitPagination}`
+      );
+      const body = await resp.json();
+
+      if (body.ok) {
+        for (let index = 0; index < body.posts.results.length; index++) {
+          if (body.posts.results[index].img) {
+            respImg = await fetchSinToken(
+              `upload/imagen/posts/${body.posts.results[index].img}`
+            );
+
+            bodyImg = await respImg.url;
+
+            body.posts.results[index].urlImg = bodyImg;
+          }
+        }
+      }
+
+      dispatch(LoadingPosts(body.posts.results));
+      dispatch(checkinFinishPagination(false));
+      dispatch(checkinFinish());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const checkinFinishPagination = (estado) => ({
+  type: types.postFinishLoadingPages,
+  payload: estado,
+});
+export const StartLoadingUltimosPosts = () => {
+  return async (dispatch) => {
+    try {
+      //sacar lso numero de paginas
+
+      let respImg;
+      let bodyImg;
+
+      const resp = await fetchSinToken(
+        `posts/pagination?page=${1}&limit=${limitPagination}`
+      );
+      const body = await resp.json();
+      if (body.ok) {
+        for (let index = 0; index < body.posts.results.length; index++) {
+          if (body.posts.results[index].img) {
+            //condicion de cargar las imagene soslo si existen
+            respImg = await fetchSinToken(
+              `upload/imagen/posts/${body.posts.results[index].img}`
+            );
+
+            bodyImg = await respImg.url;
+
+            body.posts.results[index].urlImg = bodyImg;
+          }
+        }
+        dispatch(LoadingUltimosPosts(body.posts.results));
+        dispatch(checkinFinish()); //decir que ya esta todo cargado
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const StartLoadingPostsNumberPagination = () => {
+  return async (dispatch) => {
+    try {
+      const resp = await fetchSinToken(
+        `posts/pagination?page=${1}&limit=${limitPagination}`
+      );
+      const body = await resp.json();
+      let number;
+
+      if (body.ok) {
+        //calculo para obtneer el numero de paginas utilizadas en la paginacion
+        number = body.numberPages / limitPagination;
+        number = Math.round(number);
+
+        //console.log(Math.round(number));
+
+        dispatch(numMaxPage(number));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+const numMaxPage = (number) => ({
+  type: types.postNumberPage,
+  payload: { number },
+});
 
 export const StartLoadingPostsByCategoria = async (category) => {
   try {
@@ -155,6 +324,7 @@ export const StartLoadingMyPosts = async (idUser) => {
 
     const resp = await fetchSinToken("posts");
     const body = await resp.json();
+
     let postSelec = [];
 
     if (body.ok) {
@@ -196,17 +366,17 @@ export const StartDetailPosts = async (id) => {
     const resp = await fetchSinToken(`posts/search/post/${id}`);
     const body = await resp.json();
 
-    if (body.ok && !!body.post.img) {
-      respImg = await fetchSinToken(`upload/imagen/posts/${body.post.img}`);
+    if (body.ok && !!body.posts.img) {
+      respImg = await fetchSinToken(`upload/imagen/posts/${body.posts.img}`);
 
       bodyImg = await respImg.url;
 
-      body.post.urlImg = bodyImg;
+      body.posts.urlImg = bodyImg;
     }
 
     //activamos el post selecionado y lo mostramos en la vista DetailPost
 
-    postSelec.push(body.post);
+    postSelec.push(body.posts);
 
     return postSelec;
     //dispatch(LoadingPosts(p));
@@ -354,6 +524,11 @@ const LoadingPosts = (posts) => ({
   payload: posts,
 });
 
+const LoadingUltimosPosts = (posts) => ({
+  type: types.postsLoadUltimosPost,
+  payload: posts,
+});
+
 export const PostUp = (id, msj) => ({
   type: types.postUpCorrect,
   payload: {
@@ -364,6 +539,11 @@ export const PostUp = (id, msj) => ({
 
 export const desactivePost = () => ({
   type: types.postsDesactive,
+  payload: {},
+});
+
+export const clearState = () => ({
+  type: types.postsClear,
   payload: {},
 });
 

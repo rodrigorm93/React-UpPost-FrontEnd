@@ -46,11 +46,15 @@ export const PostEntrySelect = () => {
         </>
       ) : (
         <>
-          <Row className="row-card " gutter={[32, 16]} align="middle">
+          <Row
+            className="row-card animate__animated animate__fadeIn"
+            gutter={[32, 16]}
+            align="middle"
+          >
             {data.length > 0 ? (
               <>
                 {data.map((post) => (
-                  <Col key={post.id} span={12}>
+                  <Col key={post.id} className="col-conteiner-post">
                     <PostEntry {...post} key={post.id} />
                   </Col>
                 ))}

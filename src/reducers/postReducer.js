@@ -2,10 +2,14 @@ import { types } from "../types/types";
 
 const initialState = {
   posts: [],
+  ultimosPost: [],
   active: null,
   ok: null,
   checking: true,
   deletePost: null,
+  loadingPostPagination: true,
+  loadingPostSearch: false,
+  pages: 0,
 };
 
 export const postReducer = (state = initialState, action) => {
@@ -16,6 +20,18 @@ export const postReducer = (state = initialState, action) => {
         active: {
           ...action.payload, // sacamos todo lo que nos entrego el action
         },
+      };
+
+    case types.postFinishLoadingPages:
+      return {
+        ...state,
+        loadingPostPagination: action.payload,
+      };
+
+    case types.postFinishLoadingSearch:
+      return {
+        ...state,
+        loadingPostSearch: action.payload,
       };
 
     case types.postsAddNew:
@@ -29,6 +45,14 @@ export const postReducer = (state = initialState, action) => {
         ...state, //clonamos el nuevo estado apra siempre regresar un nuevo estado
         active: null,
         ok: null,
+      };
+
+    case types.postsClear:
+      return {
+        ...state, //clonamos el nuevo estado apra siempre regresar un nuevo estado
+        active: null,
+        ok: null,
+        deletePost: null,
       };
 
     case types.postUpCorrect:
@@ -45,11 +69,24 @@ export const postReducer = (state = initialState, action) => {
         ...state,
         posts: [...action.payload], //las notas vienen en un action que es un arreglo
       };
+    case types.postsLoadUltimosPost:
+      return {
+        ...state,
+        ultimosPost: [...action.payload], //las notas vienen en un action que es un arreglo
+      };
 
     case types.postFinishLoading:
       return {
         ...state,
         checking: false,
+      };
+
+    case types.postNumberPage:
+      return {
+        ...state,
+        pages: {
+          ...action.payload,
+        },
       };
 
     case types.postUpdated:

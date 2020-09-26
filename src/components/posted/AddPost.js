@@ -6,6 +6,7 @@ import { Row, Col } from "antd";
 import { useForm } from "../../hooks/useForm";
 
 import CKEditor from "ckeditor4-react";
+
 export const AddPost = () => {
   const dispatch = useDispatch();
 
@@ -27,6 +28,11 @@ export const AddPost = () => {
 
   const { title, descripcion, urlVideo } = formValues;
 
+  const [file, setfile] = useState(false);
+
+  const onChangeFile = (e) => {
+    setfile(e.target.files);
+  };
   const handleAddNew = (e) => {
     e.preventDefault();
     let post;
@@ -65,17 +71,11 @@ export const AddPost = () => {
     setSelection(e.target.value);
   };
 
-  const [file, setfile] = useState(false);
-  const onChangeFile = (e) => {
-    setfile(e.target.files);
-    console.log(e.target.files);
-  };
-
   return (
     <div className="post__main animate__animated animate__pulse">
       <Row justify="space-around" align="middle">
         <Col span={20}>
-          <h1 className="title-add-post">AddPost</h1>
+          <h1 className="title-add-post">New Post</h1>
 
           <Form onSubmit={handleAddNew}>
             <Form.Label>Titulo:</Form.Label>
@@ -93,6 +93,7 @@ export const AddPost = () => {
                 as="textarea"
                 rows="2"
                 name="descripcion"
+                placeholder="descripcion"
                 value={descripcion}
                 onChange={handleInputChange}
               />
@@ -114,7 +115,9 @@ export const AddPost = () => {
             </Form.Control>
             <br /> <br />
             {selection === "imagen" ? (
-              <input type="file" id="fileUpload" onChange={onChangeFile} />
+              <div>
+                <input type="file" id="fileUpload" onChange={onChangeFile} />
+              </div>
             ) : (
               <Form.Group controlId="formGroupVideo">
                 <Form.Label>Url Video</Form.Label>

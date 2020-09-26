@@ -1,10 +1,14 @@
 ## App React con Redux-firebase
 
-Proyecto para subir post con imagen o video mas una descripcion, utilizamos login con google o firebase para poder tener acceso a la
-creación de post.<br />
-Utilización de Rutas privadas y publicas para controlar el manejo de los post.
+Proyecto para subir posts con una imagen o un video mas una descripcion, utilizamos login con google y registrados en nuestra base de datos .<br />
 
-In the project directory, you can run: https://rodrigorm93.github.io/React-PostedOn-app/
+El frontEnd se conecta ha nuestra base de datos de MongoDB por Express implementado en NodeJS
+Utilización de Rutas privadas y publicas para controlar los accesos en el fronEnd por medio de atentificacion,
+verificaciones por medio de tokens en el BackEnd.
+
+![Alt text](imgPosteOn.png?raw=true "img")
+
+In the project directory, you can run:
 
 ### `yarn start`
 

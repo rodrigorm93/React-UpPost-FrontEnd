@@ -8,7 +8,7 @@ verificaciones por medio de tokens en el BackEnd.
 
 ![Alt text](imgPosteOn.png?raw=true "img")
 
-In the project directory, you can run: https://mern-posted-on.herokuapp.com
+Publicado en: https://mern-posted-on.herokuapp.com
 
 ### `yarn start`
 

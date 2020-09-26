@@ -1,4 +1,4 @@
-## App React MERN (MongoDB-Express-React-Nodejs)
+## App React MERN (MongoDB-Express-React-Nodejs) Subido a Heroku
 
 Proyecto para subir posts con una imagen o un video mas una descripcion, utilizamos login con google y registrados en nuestra base de datos .<br />
 
@@ -8,7 +8,7 @@ verificaciones por medio de tokens en el BackEnd.
 
 ![Alt text](imgPosteOn.png?raw=true "img")
 
-In the project directory, you can run:
+In the project directory, you can run: https://mern-posted-on.herokuapp.com
 
 ### `yarn start`
 

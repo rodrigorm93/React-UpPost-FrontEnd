@@ -1,4 +1,4 @@
-## App React con Redux-firebase
+## App React MERN (MongoDB-Express-React-Nodejs)
 
 Proyecto para subir posts con una imagen o un video mas una descripcion, utilizamos login con google y registrados en nuestra base de datos .<br />
 

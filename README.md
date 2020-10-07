@@ -9,7 +9,7 @@ verificaciones por medio de tokens en el BackEnd.
 
 ![Alt text](imgPosteOn.png?raw=true "img")
 
-Publicado en: https://mern-posted-on.herokuapp.com
+Publicado en: https://posted-on-app-react.herokuapp.com
 
 ### `yarn start`
 
